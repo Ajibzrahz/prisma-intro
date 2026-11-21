@@ -31,4 +31,18 @@ const getCommentsByPostId = async (request, response) => {
   }
 };
 
-module.exports = { createComment, getCommentsByPostId };
+const deleteComment = async (request, response) => {
+  const commentId = request.params.commentId;
+  try {
+    await prisma.comment.delete({
+      where: { id: parseInt(commentId) },
+    });
+    response.status(204).send();
+  } catch (error) {
+    response.status(400).json({
+      error: error.message,
+    });
+  } 
+}
+
+module.exports = { createComment, getCommentsByPostId, deleteComment };
