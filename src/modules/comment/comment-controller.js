@@ -45,4 +45,20 @@ const deleteComment = async (request, response) => {
   } 
 }
 
+const updateComment = async (request, response) => {
+  const commentId = request.params.commentId;
+  const { content } = request.body;
+  try {
+    const updatedComment = await prisma.comment.update({
+      where: { id: parseInt(commentId) },
+      data: { content },
+    });
+    response.json(updatedComment);
+  } catch (error) {
+    response.status(400).json({
+      error: error.message,
+    });
+  }
+};
+
 module.exports = { createComment, getCommentsByPostId, deleteComment };
